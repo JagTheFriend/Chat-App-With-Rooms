@@ -76,7 +76,16 @@
             var roomName = prompt("Please enter the name of the room: ")
             if (roomName.split(" ").join("")) break
         }
-        var response = fetch('/chat/new-room', { method: "POST", body: JSON.stringify({name: roomName, owner: owner}) });
+        var options = {
+            method: "POST",
+            body: JSON.stringify(
+                {
+                    name: roomName,
+                    owner: owner
+                }
+            )
+        }
+        var response = fetch('/chat/new-room', options);
         var data = response.json();
         var url = data.link;
         window.location.href = `/chat/${url}`;
