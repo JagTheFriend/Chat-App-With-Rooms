@@ -2,7 +2,12 @@ const socket = io('http://localhost:3000');
 const messageForm = document.getElementById('send-container');
 const message = document.getElementById('message-input');
 const messageContainer = document.getElementById('message-container');
-const name = prompt('Please enter your name: ');
+
+while (true) {
+  const name = prompt('Please enter your name: ');
+  if (name.split(' ').join('')) break;
+}
+
 appendMessage('You joined!');
 
 socket.emit('new-user', name);
