@@ -6,7 +6,7 @@ const name = sessionStorage.getItem('username');
 
 appendMessage('You joined!');
 
-socket.emit('new-user', name);
+socket.emit('new-user', window.location.href.split('/')[4]);
 
 socket.on('chat-message', data => {
   appendMessage(`${data.name}: ${data.message}`);
