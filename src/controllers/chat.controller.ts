@@ -1,6 +1,6 @@
 // import { logger } from '@utils/logger';
+import chatModel from '@models/chat.model';
 import { NextFunction, Request, Response } from 'express';
-import { v1 as IdGenerator } from 'uuid';
 
 class ChatController {
   rooms = {};
@@ -15,9 +15,14 @@ class ChatController {
   public createNewRoom = async (req: Request, res: Response, next: NextFunction) => {
     const roomName: string = req.body.name;
     const createdBy: string = req.body.owner;
-    const roomId: string = IdGenerator();
+    const roomId: string = Date.now().toString();
     try {
-      return { link: roomId, roomName: roomName, createdBy: createdBy };
+      const newRoom = await chatModel.create({
+        roomName: roomName,
+        createdBy: createdBy,
+        roomId: roomId,
+      });
+      res.send({ link: newRoom.roomId, roomName: newRoom.roomName, createdBy: newRoom.createdBy });
     } catch (error) {
       next(error);
     }
