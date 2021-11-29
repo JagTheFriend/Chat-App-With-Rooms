@@ -19,7 +19,7 @@ import path from 'path';
 
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import { handleSocketIo } from './socket';
+import ChatController from '@controllers/chat.controller';
 
 class App {
   public app: express.Application;
@@ -41,7 +41,7 @@ class App {
   public listen() {
     const server = createServer(this.app);
     const io = new Server(server);
-    handleSocketIo(io);
+    new ChatController(io);
 
     server.listen(this.port, () => {
       logger.info(`=================================`);
