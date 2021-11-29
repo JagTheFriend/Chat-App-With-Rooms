@@ -80,8 +80,7 @@
     }
     function joinExistingChat() {
         link = document.getElementById("join-link").value
-        if (link.split(" ").join("")) {
-        }
+        if (!link.split(" ").join("")) return;
     }
 </script>
 
