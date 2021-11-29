@@ -1,9 +1,19 @@
 // import { logger } from '@utils/logger';
 import chatModel from '@models/chat.model';
 import { NextFunction, Request, Response } from 'express';
+import { Server } from 'socket.io';
 
-class ChatController {
-  rooms = {};
+export class HandleSocket {
+  io: Server;
+  constructor(io: Server) {
+    if (io) this.io = io;
+  }
+}
+
+class ChatController extends HandleSocket {
+  constructor(io?: Server) {
+    super(io);
+  }
   public index = (req: Request, res: Response, next: NextFunction) => {
     try {
       res.render('index');
@@ -23,6 +33,7 @@ class ChatController {
         roomId: roomId,
       });
       res.send({ link: newRoom.roomId, roomName: newRoom.roomName, createdBy: newRoom.createdBy });
+      this.io.emit('room-created', roomName);
     } catch (error) {
       next(error);
     }
