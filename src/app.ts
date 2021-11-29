@@ -65,7 +65,7 @@ class App {
   private initializeMiddlewares() {
     this.app.set('views', path.join(__dirname, '/views'));
     this.app.set('view engine', 'ejs');
-    this.app.use(express.static(path.join(__dirname, 'public')));
+    this.app.use(express.static(path.join(__dirname, '/public')));
 
     this.app.use(morgan(config.get('log.format'), { stream }));
     this.app.use(cors({ origin: config.get('cors.origin'), credentials: config.get('cors.credentials') }));
