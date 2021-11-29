@@ -1,8 +1,8 @@
-// import { logger } from '@utils/logger';
 import chatModel from '@models/chat.model';
 import { NextFunction, Request, Response } from 'express';
 import { Server } from 'socket.io';
 import { handleSocketIo } from '../socket';
+import path from 'path';
 
 class ChatController {
   public io: Server;
@@ -34,10 +34,15 @@ class ChatController {
     const roomId = req.params.id;
     try {
       const room = await chatModel.findOne({ roomId: roomId });
-      res.render('chat', room);
+      res.render('chat');
+      handleSocketIo.io.emit('join-room', room);
     } catch (error) {
       next(error);
     }
+  };
+
+  public script = (req: Request, res: Response, next: NextFunction) => {
+    res.sendFile(path.join(__dirname.replace('controllers', '') + '/public/script.js'));
   };
 }
 
