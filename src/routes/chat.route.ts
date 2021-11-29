@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import ChatController from '@controllers/chat.controller';
 import { Routes } from '@interfaces/routes.interface';
+import validationMiddleware from '@middlewares/validation.middleware';
+import { CreateChatDto } from '@dtos/chat.dto';
 
 class ChatRoute implements Routes {
   public path = '/chat';
@@ -13,7 +15,7 @@ class ChatRoute implements Routes {
 
   private initializeRoutes() {
     this.router.get(`${this.path}`, this.chatController.index);
-    this.router.post(`${this.path}/new-room`, this.chatController.createNewRoom);
+    this.router.post(`${this.path}/new-room`, validationMiddleware(CreateChatDto, 'body'), this.chatController.createNewRoom);
   }
 }
 
