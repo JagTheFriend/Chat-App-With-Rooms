@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import config from 'config';
 import express from 'express';
-import helmet from 'helmet';
+// import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
 import { connect, set } from 'mongoose';
@@ -16,6 +16,10 @@ import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
 import path from 'path';
+
+import { createServer } from 'http';
+import { Server } from 'socket.io';
+import { handleSocketIo } from './socket';
 
 class App {
   public app: express.Application;
@@ -35,7 +39,11 @@ class App {
   }
 
   public listen() {
-    this.app.listen(this.port, () => {
+    const server = createServer(this.app);
+    const io = new Server(server);
+    handleSocketIo(io);
+
+    server.listen(this.port, () => {
       logger.info(`=================================`);
       logger.info(`======= ENV: ${this.env} =======`);
       logger.info(`🚀 App listening on the port ${this.port}`);
@@ -62,7 +70,7 @@ class App {
     this.app.use(morgan(config.get('log.format'), { stream }));
     this.app.use(cors({ origin: config.get('cors.origin'), credentials: config.get('cors.credentials') }));
     this.app.use(hpp());
-    this.app.use(helmet());
+    // this.app.use(helmet());
     this.app.use(compression());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));

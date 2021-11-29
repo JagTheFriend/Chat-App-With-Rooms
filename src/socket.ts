@@ -1,2 +1,3 @@
-import { getServer } from './server';
-import io from 'socket.io';
+export function handleSocketIo(io) {
+  console.log('hii');
+}
