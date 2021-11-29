@@ -13,6 +13,7 @@ class ChatRoute implements Routes {
 
   private initializeRoutes() {
     this.router.get(`${this.path}`, this.chatController.index);
+    this.router.post(`${this.path}/new-room`, this.chatController.createNewRoom);
   }
 }
 

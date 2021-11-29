@@ -69,11 +69,17 @@
         }
     }
     async function createChat() {
-        if (!saveUsername(document.getElementById("username").value)) return;
-        var response = fetch('/new-room', { method: "POST" });
+        var owner = document.getElementById("username").value
+        if (!saveUsername(owner)) return;
+        var roomName = ""
+        while (true) {
+            var roomName = prompt("Please enter the name of the room: ")
+            if (roomName.split(" ").join("")) break
+        }
+        var response = fetch('/chat/new-room', { method: "POST", body: JSON.stringify({name: roomName, owner: owner}) });
         var data = response.json();
         var url = data.link;
-        window.location.href = `/${url}`;
+        window.location.href = `/chat/${url}`;
     }
     function cancel() {
         document.getElementById("join-chat").innerHTML = "";
