@@ -33,7 +33,17 @@ class ChatController extends HandleSocket {
         roomId: roomId,
       });
       res.send({ link: newRoom.roomId, roomName: newRoom.roomName, createdBy: newRoom.createdBy });
-      this.io.emit('room-created', roomName);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public joinRoom = async (req: Request, res: Response, next: NextFunction) => {
+    const roomId = req.params.id;
+    try {
+      const room = await chatModel.findOne({ roomId: roomId });
+      res.render('chat', room);
+      this.io.emit('room-created', room.roomName);
     } catch (error) {
       next(error);
     }
