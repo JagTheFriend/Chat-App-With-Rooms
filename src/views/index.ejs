@@ -3,55 +3,86 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
     <title>Chat App</title>
-    <script defer src="http://localhost:3000/socket.io/socket.io.js"></script>
-    <script defer src="./script.js"></script>
     <style>
-        body {
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-        }
-
-        #message-container {
-            width: 80%;
-            max-width: 1200px;
-        }
-
-        #message-container div {
-            background-color: #CCC;
-            padding: 5px;
-        }
-
-        #message-container div:nth-child(2n) {
-            background-color: #FFF;
-        }
-
-        #send-container {
-            position: fixed;
-            padding-bottom: 30px;
-            bottom: 0;
-            background-color: white;
-            max-width: 1200px;
-            width: 80%;
-            display: flex;
-        }
-
-        #message-input {
-            flex-grow: 1;
+        .buttons {
+            padding-top: 0.4rem;
+            padding-bottom: 2rem;
         }
     </style>
 </head>
 
 <body>
-    <div id="message-container"></div>
-    <form id="send-container">
-        <input type="text" id="message-input">
-        <button type="submit" id="send-button">Send</button>
-    </form>
+    <br>
+    <div class="container" id="container">
+        <form id="form">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="username" placeholder="Your username" required>
+                <label for="username">Enter your username</label>
+            </div>
+            <div class="buttons">
+                <button class="btn btn-outline-primary" onclick="joinChat()">Join an existing chat</button>
+                <button class="btn btn-outline-info" onclick="createChat()">Create a new chat</button>
+            </div>
+        </form>
+        <form id="join-form">
+            <div id="join-chat"></div>
+        </form>
+    </div>
 </body>
+
+<script>
+    document.getElementById("form").addEventListener("submit", (event) => {
+        event.preventDefault();
+    });
+    document.getElementById("join-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+    });
+    function saveUsername(username) {
+        if (username) {
+            sessionStorage.setItem("username", username)
+            return true;
+        }
+        return false;
+    }
+    function joinChat() {
+        if (saveUsername(document.getElementById("username").value)) {
+            document.getElementById("join-chat").innerHTML = `
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="join-link" placeholder="Your username" required>
+                    <label for="join-link">Enter the link:</label>
+                </div>
+                <div class="buttons">
+                    <button class="btn btn-outline-success" onclick="joinExistingChat()">Continue</button>
+                    <button class="btn btn-outline-danger" onclick="cancel()">Cancel</button>
+                </div>
+            `
+        }
+    }
+    async function createChat() {
+        if (!saveUsername(document.getElementById("username").value)) return;
+        var response = fetch('/new-room', { method: "POST" });
+        var data = response.json();
+        var url = data.link;
+        window.location.href = `/${url}`;
+    }
+    function cancel() {
+        document.getElementById("join-chat").innerHTML = "";
+    }
+    function joinExistingChat() {
+        link = document.getElementById("join-link").value
+        if (link.split(" ").join("")) {
+        }
+    }
+</script>
 
 </html>
