@@ -34,6 +34,7 @@ class ChatController {
     const roomId = req.params.id;
     try {
       const room = await chatModel.findOne({ roomId: roomId });
+      if (!room) return res.send({ message: 'Room not found...' });
       res.render('chat');
       handleSocketIo.io.emit('join-room', room);
     } catch (error) {

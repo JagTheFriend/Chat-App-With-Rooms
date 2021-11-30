@@ -92,6 +92,11 @@
     function joinExistingChat() {
         link = document.getElementById("join-link").value
         if (!link.split(" ").join("")) return;
+        if (link.startsWith("http")) {
+            link = link.split('/')[4]
+            window.location.href = `/${link}`
+        }
+        window.location.href = `${link}`
     }
 </script>
 
