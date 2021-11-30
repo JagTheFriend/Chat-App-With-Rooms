@@ -1,6 +1,4 @@
 import { Server } from 'socket.io';
-import chatModel from '@models/chat.model';
-import { MessageSchema } from '@interfaces/message.interface';
 
 function handleSocketIo_(io: Server) {
   io.on('connect', socket => {
@@ -14,7 +12,7 @@ function handleSocketIo_(io: Server) {
     });
 
     socket.on('disconnect', () => {
-      socket.broadcast.emit('user-disconnect', 'jag');
+      socket.broadcast.emit('user-disconnect', 'Someone');
     });
   });
 }
