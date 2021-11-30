@@ -1,7 +1,7 @@
-import { model, Schema } from 'mongoose';
-import { MessageSchema } from '@interfaces/message.interface';
+import { /*model,*/ Schema } from 'mongoose';
+// import { MessageSchema } from '@interfaces/message.interface';
 
-const messageSchema: Schema = new Schema({
+export const messageSchema: Schema = new Schema({
   roomId: {
     type: String,
     required: true,
@@ -16,4 +16,4 @@ const messageSchema: Schema = new Schema({
   },
 });
 
-export const messageModel = model<MessageSchema>('message', messageSchema);
+// export const messageModel = model<MessageSchema>('message', messageSchema);

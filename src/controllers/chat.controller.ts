@@ -23,6 +23,7 @@ class ChatController {
         roomName: roomName,
         createdBy: createdBy,
         roomId: roomId,
+        messages: [],
       });
       res.send({ link: newRoom.roomId, roomName: newRoom.roomName, createdBy: newRoom.createdBy });
     } catch (error) {

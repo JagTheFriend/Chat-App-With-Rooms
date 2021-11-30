@@ -1,5 +1,6 @@
 import { model, Schema } from 'mongoose';
 import { ChatSchema } from '@interfaces/chat.interface';
+import { messageSchema } from '@models/message.model';
 
 const chatSchema: Schema = new Schema({
   roomName: {
@@ -14,6 +15,10 @@ const chatSchema: Schema = new Schema({
     type: String,
     required: true,
     unique: true,
+  },
+  messages: {
+    type: [messageSchema],
+    required: false,
   },
 });
 
