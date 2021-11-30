@@ -18,6 +18,7 @@ class ChatRoute implements Routes {
     this.router.post(`${this.path}/new-room`, validationMiddleware(CreateChatDto, 'body'), this.chatController.createNewRoom);
     this.router.get(`${this.path}/script.js`, this.chatController.script);
     this.router.get(`${this.path}/:id`, this.chatController.joinRoom);
+    this.router.post(`${this.path}/messages/:id`, this.chatController.getMessages);
   }
 }
 

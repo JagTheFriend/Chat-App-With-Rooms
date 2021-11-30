@@ -43,6 +43,16 @@ class ChatController {
     }
   };
 
+  public getMessages = async (req: Request, res: Response, next: NextFunction) => {
+    const roomId = req.params.id;
+    console.log(roomId);
+    try {
+      const room = await chatModel.findOne({ roomId: roomId });
+      res.send({ messages: room.messages });
+    } catch (error) {
+      next(error);
+    }
+  };
   public script = (req: Request, res: Response) => {
     res.sendFile(path.join(__dirname.replace('controllers', '') + '/public/script.js'));
   };
