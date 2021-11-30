@@ -7,3 +7,14 @@ export class CreateChatDto {
   @IsString()
   owner: string;
 }
+
+export class CreateMessageDto {
+  @IsString()
+  id: string;
+
+  @IsString()
+  message: string;
+
+  @IsString()
+  username: string;
+}
