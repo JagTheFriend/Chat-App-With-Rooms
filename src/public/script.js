@@ -2,11 +2,19 @@ const socket = io('http://localhost:3000');
 const messageForm = document.getElementById('send-container');
 const message = document.getElementById('message-input');
 const messageContainer = document.getElementById('message-container');
-const name = sessionStorage.getItem('username');
+const roomId = window.location.href.split('/')[4];
+var username = sessionStorage.getItem('username');
+
+if (username == undefined) {
+  while (true) {
+    username = prompt('Please enter your username: ');
+    if (username.split(' ').join('')) break;
+  }
+}
 
 appendMessage('You joined!');
 
-socket.emit('new-user', window.location.href.split('/')[4]);
+socket.emit('new-user', roomId, username);
 
 socket.on('chat-message', data => {
   appendMessage(`${data.name}: ${data.message}`);
@@ -22,8 +30,8 @@ socket.on('user-disconnect', name => {
 
 messageForm.addEventListener('submit', event => {
   event.preventDefault();
-  socket.emit('send-chat-message', message.value);
-  appendMessage(`${name}: ${message.value}`);
+  socket.emit('send-chat-message', roomId, username, message.value);
+  appendMessage(`${username}: ${message.value}`);
   message.value = '';
 });
 

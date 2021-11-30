@@ -83,7 +83,6 @@
         }
         var response = await fetch('/chat/new-room', options);
         var data = await response.json();
-        console.log(data)
         var url = data.link;
         window.location.href = `/chat/${url}`;
     }

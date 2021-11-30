@@ -2,14 +2,13 @@ import { Server } from 'socket.io';
 
 function handleSocketIo_(io: Server) {
   io.on('connect', socket => {
-    socket.on('new-user', (roomId: string) => {
+    socket.on('new-user', (roomId: string, username: string) => {
       socket.join(roomId);
-      socket.to(roomId).emit('user-connected', 'jag');
+      socket.to(roomId).emit('user-connected', username);
     });
 
-    socket.on('send-chat-message', (roomId: string, message: string) => {
-      console.log(message);
-      socket.to(roomId).emit('chat-message', { message: message, name: 'jag' });
+    socket.on('send-chat-message', (roomId: string, username: string, message: string) => {
+      socket.to(roomId).emit('chat-message', { message: message, name: username });
     });
 
     socket.on('disconnect', () => {
