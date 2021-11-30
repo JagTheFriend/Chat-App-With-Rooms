@@ -2,6 +2,11 @@ import { model, Schema } from 'mongoose';
 import { MessageSchema } from '@interfaces/message.interface';
 
 const messageSchema: Schema = new Schema({
+  roomId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   content: {
     type: String,
     required: true,
@@ -9,12 +14,6 @@ const messageSchema: Schema = new Schema({
   author: {
     type: String,
   },
-  roomId: {
-    type: String,
-    required: true,
-  },
 });
 
-const messageModel = model<MessageSchema>('message', messageSchema);
-
-export default messageModel;
+export const messageModel = model<MessageSchema>('message', messageSchema);
