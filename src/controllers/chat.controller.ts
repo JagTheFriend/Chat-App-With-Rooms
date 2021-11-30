@@ -42,7 +42,7 @@ class ChatController {
     }
   };
 
-  public script = (req: Request, res: Response, next: NextFunction) => {
+  public script = (req: Request, res: Response) => {
     res.sendFile(path.join(__dirname.replace('controllers', '') + '/public/script.js'));
   };
 }
