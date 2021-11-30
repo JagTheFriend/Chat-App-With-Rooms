@@ -13,6 +13,13 @@ if (username == undefined) {
 }
 
 appendMessage('You joined!');
+fetch(`/chat/messages/${roomId}`, { method: 'POST' })
+  .then(data => data.json())
+  .then(data => {
+    for (chatMessage of data.messages) {
+      appendMessage(`${chatMessage.author}: ${chatMessage.content}`);
+    }
+  });
 
 socket.emit('new-user', roomId, username);
 
