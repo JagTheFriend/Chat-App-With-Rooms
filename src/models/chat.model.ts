@@ -1,6 +1,20 @@
 import { model, Schema } from 'mongoose';
 import { ChatSchema } from '@interfaces/chat.interface';
-import { messageSchema } from '@models/message.model';
+
+const messageSchema: Schema = new Schema({
+  roomId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+  author: {
+    type: String,
+  },
+});
 
 const chatSchema: Schema = new Schema({
   roomName: {
