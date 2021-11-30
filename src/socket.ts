@@ -10,14 +10,6 @@ function handleSocketIo_(io: Server) {
     });
 
     socket.on('send-chat-message', async (roomId: string, username: string, message: string) => {
-      const room = await chatModel.findOne({ roomId: roomId });
-      const newMessage: MessageSchema = {
-        roomId: roomId,
-        content: message,
-        author: username,
-      };
-      room.messages.push(newMessage);
-      await room.save();
       socket.to(roomId).emit('chat-message', { message: message, name: username });
     });
 
