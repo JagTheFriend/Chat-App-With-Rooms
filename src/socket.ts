@@ -1,4 +1,6 @@
 import { Server } from 'socket.io';
+import chatModel from '@models/chat.model';
+import { MessageSchema } from '@interfaces/message.interface';
 
 function handleSocketIo_(io: Server) {
   io.on('connect', socket => {
@@ -7,7 +9,15 @@ function handleSocketIo_(io: Server) {
       socket.to(roomId).emit('user-connected', username);
     });
 
-    socket.on('send-chat-message', (roomId: string, username: string, message: string) => {
+    socket.on('send-chat-message', async (roomId: string, username: string, message: string) => {
+      const room = await chatModel.findOne({ roomId: roomId });
+      const newMessage: MessageSchema = {
+        roomId: roomId,
+        content: message,
+        author: username,
+      };
+      room.messages.push(newMessage);
+      await room.save();
       socket.to(roomId).emit('chat-message', { message: message, name: username });
     });
 

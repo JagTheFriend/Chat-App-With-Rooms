@@ -1,5 +1,5 @@
-import { Document } from 'mongoose';
-export interface MessageSchema extends Document {
+// import { Document } from 'mongoose';
+export interface MessageSchema {
   content: string;
   author: string;
   roomId: string;
