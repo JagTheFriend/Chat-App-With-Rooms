@@ -40,7 +40,11 @@ class App {
 
   public listen() {
     const server = createServer(this.app);
-    const io = new Server(server);
+    const io = new Server(server, {
+      cors: {
+        origin: '*',
+      },
+    });
     handleSocketIo.SetIo(io);
     server.listen(this.port, () => {
       logger.info(`=================================`);
