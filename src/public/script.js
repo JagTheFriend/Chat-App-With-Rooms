@@ -13,6 +13,13 @@ if (username == undefined) {
 }
 
 appendMessage('You joined!');
+fetch(`/chat/messages/${roomId}`, { method: 'POST' })
+  .then(data => data.json())
+  .then(data => {
+    for (chatMessage of data.messages) {
+      appendMessage(`${chatMessage.author}: ${chatMessage.content}`);
+    }
+  });
 
 socket.emit('new-user', roomId, username);
 
@@ -30,9 +37,26 @@ socket.on('user-disconnect', name => {
 
 messageForm.addEventListener('submit', event => {
   event.preventDefault();
-  socket.emit('send-chat-message', roomId, username, message.value);
-  appendMessage(`${username}: ${message.value}`);
-  message.value = '';
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      id: roomId,
+      message: message.value,
+      username: username,
+    }),
+  };
+  fetch(`/chat/create`, options)
+    .then(data => data.json())
+    .then(data => {
+      if (data.success) {
+        socket.emit('send-chat-message', roomId, username, message.value);
+        appendMessage(`${username}: ${message.value}`);
+        message.value = '';
+      } else {
+        alert('Something went wrong...');
+      }
+    });
 });
 
 function appendMessage(message) {

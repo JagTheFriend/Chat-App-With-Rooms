@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { Server } from 'socket.io';
 import { handleSocketIo } from '../socket';
 import path from 'path';
+import { MessageSchema } from '@interfaces/message.interface';
 
 class ChatController {
   public io: Server;
@@ -23,6 +24,7 @@ class ChatController {
         roomName: roomName,
         createdBy: createdBy,
         roomId: roomId,
+        messages: [],
       });
       res.send({ link: newRoom.roomId, roomName: newRoom.roomName, createdBy: newRoom.createdBy });
     } catch (error) {
@@ -42,7 +44,38 @@ class ChatController {
     }
   };
 
-  public script = (req: Request, res: Response, next: NextFunction) => {
+  public getMessages = async (req: Request, res: Response, next: NextFunction) => {
+    const roomId = req.params.id;
+    console.log(roomId);
+    try {
+      const room = await chatModel.findOne({ roomId: roomId });
+      res.send({ messages: room.messages });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public storeMessage = async (req: Request, res: Response, next: NextFunction) => {
+    const roomId = req.body.id;
+    const message = req.body.message;
+    const username = req.body.username;
+    console.log(req.body);
+    try {
+      const room = await chatModel.findOne({ roomId: roomId });
+      const newMessage: MessageSchema = {
+        roomId: roomId,
+        content: message,
+        author: username,
+      };
+      room.messages.push(newMessage);
+      await room.save();
+      res.send({ success: true });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public script = (req: Request, res: Response) => {
     res.sendFile(path.join(__dirname.replace('controllers', '') + '/public/script.js'));
   };
 }
