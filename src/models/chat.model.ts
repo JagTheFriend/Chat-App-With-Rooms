@@ -13,6 +13,7 @@ const messageSchema: Schema = new Schema({
   },
   author: {
     type: String,
+    required: true,
   },
 });
 
