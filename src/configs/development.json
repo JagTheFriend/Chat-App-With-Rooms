@@ -1,17 +1,17 @@
 {
-    "env": "development",
-    "dbConfig": {
-        "host": "localhost",
-        "database": "chatapp",
-        "port": 27017
-    },
-    "secretKey": "secretKey",
-    "log": {
-        "format": "dev",
-        "dir": "../logs"
-    },
-    "cors": {
-        "origin": true,
-        "credentials": true
-    }
+  "env": "production",
+  "dbConfig": {
+    "host": "localhost",
+    "database": "chatapp",
+    "port": 27017
+  },
+  "secretKey": "secretKey",
+  "log": {
+    "format": "combined",
+    "dir": "../logs"
+  },
+  "cors": {
+    "origin": true,
+    "credentials": true
+  }
 }
