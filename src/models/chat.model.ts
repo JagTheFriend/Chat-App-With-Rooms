@@ -5,7 +5,7 @@ const messageSchema: Schema = new Schema({
   roomId: {
     type: String,
     required: true,
-    unique: true,
+    default: () => Date.now().toString(),
   },
   content: {
     type: String,
@@ -30,6 +30,7 @@ const chatSchema: Schema = new Schema({
     type: String,
     required: true,
     unique: true,
+    default: () => Date.now().toString(),
   },
   messages: {
     type: [messageSchema],
