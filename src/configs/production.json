@@ -1,5 +1,5 @@
 {
-  "env": "development",
+  "env": "production",
   "dbConfig": {
     "host": "localhost",
     "database": "chatapp",
@@ -7,7 +7,7 @@
   },
   "secretKey": "secretKey",
   "log": {
-    "format": "dev",
+    "format": "combined",
     "dir": "../logs"
   },
   "cors": {
