@@ -17,8 +17,8 @@ ENV NODE_ENV development
 CMD ["npm", "run", "dev"]
 
 # Production build stage
-FROM common-build-stage as production-build-stage
+# FROM common-build-stage as production-build-stage
 
-ENV NODE_ENV production
+# ENV NODE_ENV production
 
-CMD ["npm", "run", "start"]
+# CMD ["npm", "run", "start"]
